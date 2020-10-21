@@ -61,7 +61,7 @@ const navItems = [
     {
         title: 'Exit',
         type: 'button',
-        // onPress: exitApp,
+        onPress: exitApp,
     }
 ];
 
@@ -83,6 +83,7 @@ class Navigation extends Component {
                 links.push(item);
             }
         })
+        
         return (
             <NativeRouter>
                 <View style={styles.main}>

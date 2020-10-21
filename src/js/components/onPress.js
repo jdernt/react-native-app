@@ -10,5 +10,5 @@ import { BackHandler } from 'react-native';
 // }
 
 export const exitApp = function exitApp() {
-  exitApp();
+  BackHandler.exitApp();
 }
