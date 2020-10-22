@@ -5,10 +5,7 @@ import { BackHandler } from 'react-native';
 
 // }
 
-// export const openBrowser = function openBrowser() {
-  
-// }
-
 export const exitApp = function exitApp() {
   BackHandler.exitApp();
-}
+};
+
