@@ -29,18 +29,12 @@ const Home = () => {
 const Slider = () => {
 	return (
 		<SliderPage />
-		// <View style={styles.main__section}>
-		// 	<Text style={styles.main__text}>Home</Text>
-		// </View>
 	)
 };
 
 const OpenBrowser = () => {
 	return (
 		<WebView source={{uri: 'https://q-digital.org/'}} />
-		// <View style={styles.main__section}>
-		// 	<Text style={styles.main__text}>Browser</Text>
-		// </View>
 	)
 }
 
@@ -112,7 +106,6 @@ class Navigation extends Component {
 										? <LinkComponent item={item} />
 										: <Button
 											title={item.title}
-											color={styleVars.darkBg}
 											onPress={item.onPress}
 										/>
 									}

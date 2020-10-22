@@ -1,44 +1,46 @@
 import React, { Component, useState } from 'react'
 import {
-	View,
+  View,
   Text,
   Image,
   Button,
 } from 'react-native';
+import { connect } from "react-redux";
+import { changeState } from "../redux/actions";
 import { styles } from '../styles';
-import slide1 from '../../img/photo-1.jpg';
-import slide2 from '../../img/photo-2.jpg';
-import slide3 from '../../img/photo-3.jpg';
 
-const localImg = [
-  slide3,
-  slide2,
-  slide1
-];
+let serverImg;
 
-const serverImg = [
-  slide1,
-  slide2,
-  slide3
-];
+const getImg = async () => {
+  const response = await fetch('https://imagesapi.osora.ru/', {
+    method: 'GET'
+  });
+
+  const result = await response.json();
+  serverImg = result;
+}
+
+getImg();
+
+const mapStateToProps = (state) => ({
+  src: state.src,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  changeState(urls) {
+    dispatch(changeState(urls));
+  },
+});
 
 const SliderList = (props) => {
   let [count, setCount] = useState(0);
 
   const nextImg = () => {
-    if (count++ === props.img.length-1) {
-      setCount(0);
-    } else {
-      setCount(count++);
-    }
+    (count++ === props.img.length-1) ? setCount(0) : setCount(count++);
   }
 
   const prevImg = () => {
-    if (count-- === 0) {
-      setCount(props.img.length-1);
-    } else {
-      setCount(count--);
-    }
+    (count-- === 0) ? setCount(props.img.length-1) : setCount(count--);
   }
 
   return (
@@ -46,34 +48,28 @@ const SliderList = (props) => {
       <Button title="prev" onPress={prevImg} />
       <Button title="switch" onPress={props.func} />
       <Button title="next" onPress={nextImg} />
-      <SliderItem img={props.img[count]}/>
+      <SliderItem img={props.img[0]} />
     </View>
   )
 }
 
-const SliderItem = (props) => {
+const SliderItem = ({ img }) => {
   return (
     <View style={styles.slider__item}>
-      <Image source={props.img} style={styles.slider__img} />
+      <Image source={img} style={styles.slider__img} />
     </View>
   )
 }
 
-function SliderPage() {
-  const [isLocal, setState] = useState(true);
-
-  const switchFunc = () => {
-    setState(!isLocal)
-  }
-
+const SliderPage = (props) => {
   return (
     <View>
-        { isLocal 
-          ? <SliderList func={switchFunc} img={localImg} />
-          : <SliderList func={switchFunc} img={serverImg} />
-        }
+      <SliderList func={() => { 
+        // props.changeState(serverImg)
+        console.log(props.src)
+      }} img={props.src} />
     </View>
   )
 }
 
-export default SliderPage;
+export default connect(mapStateToProps, mapDispatchToProps)(SliderPage);

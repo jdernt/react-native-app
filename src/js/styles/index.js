@@ -64,7 +64,7 @@ export const styles = StyleSheet.create({
 		marginTop: 10,
 	},
 	slider__img: {
-		width: '95%',
+		width: '95.5%',
 		height: '80%',
 		resizeMode: 'contain',
 	},

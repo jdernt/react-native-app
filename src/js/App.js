@@ -6,12 +6,17 @@ import {
 import Navigation from './components/Navigation';
 import { styles } from './styles';
 
+import { Provider } from "react-redux";
+import store from "./redux/initialState";
+
 const App = () => {
   return (
-    <View style={styles.container}>
-      <Header />
-      <Navigation />
-    </View>
+    <Provider store={store}>
+      <View style={styles.container}>
+        <Header />
+        <Navigation />
+      </View>
+    </Provider>
   )
 }
 
