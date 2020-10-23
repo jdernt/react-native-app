@@ -6,7 +6,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { connect } from "react-redux";
-import { changeState } from "../redux/actions";
+import { changeState, returnState } from "../redux/actions";
 import { styles } from '../styles';
 
 const mapStateToProps = (state) => ({
@@ -16,7 +16,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => {
   return {
     changeState: (urls) => dispatch(changeState(urls)),
-    returnState: () => dispatch({type: 'INIT'}),
+    returnState: () => dispatch(returnState()),
   }
 };
 
@@ -53,24 +53,16 @@ class SliderList extends Component {
         <Button title="prev" onPress={() => {this.prevImg()}} />
         <Button title="switch" onPress={this.props.func} />
         <Button title="next" onPress={() => {this.nextImg()}} />
-        <SliderItem img={this.props.img[count]} state={this.props.state} />
-      </View>
-    )
-  }
-}
-
-class SliderItem extends Component {
-  constructor(props){
-    super(props)
-  }
-
-  render() {
-    return (
-      <View style={styles.slider__item}>
-        { this.props.state 
-          ? <Image source={this.props.img} style={styles.slider__img} />
-          : <Image source={{uri: this.props.img}} style={styles.slider__img} />
-        }
+        <View style={styles.slider__item}>
+          <Image 
+            source={
+              this.props.state 
+              ? this.props.img[count] 
+              : {uri: this.props.img[count]}
+            } 
+            style={styles.slider__img} 
+          />
+        </View>
       </View>
     )
   }
@@ -102,12 +94,18 @@ class SliderPage extends Component {
 
     return (
       <View>
-        {isLoading ? <ActivityIndicator/> : (
-          <SliderList func={() => {
-            (this.props.state.isLocal) ? this.props.changeState(data) : this.props.returnState();
-            console.log(this.props.state)
-          }} img={this.props.state.src} state={this.props.state.isLocal}/>
-        )}
+        {isLoading 
+          ? <ActivityIndicator/> 
+          : (<SliderList 
+              func={() => {
+                (this.props.state.isLocal) 
+                ? this.props.changeState(data) 
+                : this.props.returnState();
+                console.log(this.props.state)
+              }} 
+              img={this.props.state.src} state={this.props.state.isLocal}
+            />)
+        }
       </View>
     )
   }

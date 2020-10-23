@@ -1,5 +1,5 @@
 import React from 'react'
-import { BackHandler, TouchableOpacity } from 'react-native';
+import { BackHandler } from 'react-native';
 import Communications from 'react-native-communications';
 
 export const exitApp = function exitApp() {

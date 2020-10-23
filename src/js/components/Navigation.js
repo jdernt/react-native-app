@@ -25,16 +25,6 @@ const MusicPlayer = () => {
 	)
 }
 
-const OpenBrowser = () => {
-	return (
-		<TouchableOpacity onPress={() => Communications.web('https://q-digital.org/')}>
-			<View>
-				<Text>Browser</Text>
-			</View>
-		</TouchableOpacity>
-	)
-}
-
 const navItems = [
 	{
 		title: 'Slider',

@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
 		height: '40%',
 		width: '65%',
 		padding: 30,
-		borderRadius: 5,
+		borderRadius: 2,
 		backgroundColor: '#ffffff80',
 	},
 	auth__title: {
@@ -27,13 +27,14 @@ export const styles = StyleSheet.create({
 		fontSize: 26,
 		textAlign: 'center',
 	},
-	auth__btn: {
+	auth__close: {
 		alignSelf: 'center',
 		width: 40,
 		height: 30,
 		fontSize: 20,
 		padding: 7,
-		backgroundColor: '#33333310',
+		borderRadius: 2,
+		backgroundColor: '#33333330',
 	},
 	header: {
 		width: '100%',
@@ -91,7 +92,7 @@ export const styles = StyleSheet.create({
 	},
 	slider__img: {
 		width: '95.5%',
-		height: '80%',
+		height: '70%',
 		resizeMode: 'contain',
 	},
 	player: {

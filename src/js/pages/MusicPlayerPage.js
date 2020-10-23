@@ -8,25 +8,31 @@ import Sound from 'react-native-sound';
 
 import { styles } from '../styles';
 
+const jungle = new Sound('jungle.mp3');
+const spencer = new Sound('imaman.mp3');
+
 const sounds = [
   {
     title: 'jungle',
     url: 'jungle.mp3',
+    sound: jungle,
   },
   {
     title: 'im a man',
     url: 'imaman.mp3',
+    sound: spencer,
   }
 ];
 
 class MusicPlayerPage extends Component {
-  constructor(props){
-    super(props)
-    this.state = {
-      isPlaying: false,
-      count: 0,
-      sound: new Sound(sounds[0].url)
-    }
+
+  state = {
+    isPlaying: false,
+    playbackInstance: null,
+    currentIndex: 1,
+    volume: 1.0,
+    isBuffering: false,
+    sound: sounds[0].sound,
   }
 
   prevSound = () => {
@@ -34,18 +40,17 @@ class MusicPlayerPage extends Component {
   }
 
   nextSound = () => {
-    if (this.state.count++ >= sounds.length-2) {
+    try {
       this.setState({ 
-        count: -1,
-        sound: Sound(sounds[this.state.count].url)
-       })
-    } else {
+        currentIndex: this.state.currentIndex+1,
+        sound: sounds[this.state.currentIndex+1].sound
+      })
+    } catch {  
       this.setState({ 
-        count: this.state.count+0,
-        sound: Sound(sounds[this.state.count].url)
+        currentIndex: 0,
+        sound: sounds[0].sound
       })
     }
-    console.log(this.state)
   }
 
   playSound = (file) => {

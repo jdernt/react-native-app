@@ -22,7 +22,7 @@ const socials = [
   }
 ]
 
-class AuthPage extends Component {
+class Auth extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -38,7 +38,7 @@ class AuthPage extends Component {
           return <Button title={social.title} key={i} />
         })}
         <TouchableHighlight 
-          style={styles.auth__btn}
+          style={styles.auth__close}
           onPress={() => {
             this.props.onPress();
           }}
@@ -50,4 +50,4 @@ class AuthPage extends Component {
   }
 }
 
-export default AuthPage;
+export default Auth;

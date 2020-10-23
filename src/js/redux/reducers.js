@@ -17,13 +17,4 @@ export default function (state = initialState, action) {
     default:
       return initialState;
   }
-  // if (action.type === CHANGE_STATE) {
-  //   return {
-  //     ...state,
-  //     isLocal: false,
-  //     src: action.src,
-  //   };
-  // } else {
-  //   return initialState;
-  // }
 }
