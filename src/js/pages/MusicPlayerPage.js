@@ -34,15 +34,15 @@ class MusicPlayerPage extends Component {
   }
 
   nextSound = () => {
-    if (this.state.count++ >= sounds.length-1) {
+    if (this.state.count++ >= sounds.length-2) {
       this.setState({ 
-        count: 0,
-        sound: new Sound(sounds[this.state.count].url)
+        count: -1,
+        sound: Sound(sounds[this.state.count].url)
        })
     } else {
       this.setState({ 
-        count: this.state.count++,
-        sound: new Sound(sounds[this.state.count].url)
+        count: this.state.count+0,
+        sound: Sound(sounds[this.state.count].url)
       })
     }
     console.log(this.state)

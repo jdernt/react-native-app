@@ -3,23 +3,15 @@ import {
 	View,
 	Text,
 	Button,
+	TouchableOpacity
 } from 'react-native';
-import { WebView } from 'react-native-webview';
 
 import { NativeRouter, Route, Link } from "react-router-native";
 import SliderPage from '../pages/SliderPage';
 import MusicPlayerPage from '../pages/MusicPlayerPage';
-import { openPlayer, exitApp } from './onPress';
+import { openBrowser, exitApp } from './onPress';
 import { styleVars } from '../styles/vars';
 import { styles } from '../styles';
-
-const Home = () => {
-	return (
-		<View style={styles.main__section}>
-			<Text style={styles.main__text}>Home</Text>
-		</View>
-	)
-};
 
 const Slider = () => {
 	return (
@@ -35,23 +27,20 @@ const MusicPlayer = () => {
 
 const OpenBrowser = () => {
 	return (
-		<WebView source={{uri: 'https://q-digital.org/'}} />
+		<TouchableOpacity onPress={() => Communications.web('https://q-digital.org/')}>
+			<View>
+				<Text>Browser</Text>
+			</View>
+		</TouchableOpacity>
 	)
 }
 
 const navItems = [
 	{
-		title: 'Home',
+		title: 'Slider',
 		type: 'link',
 		url: '/',
 		exact: true,
-		component: Home,
-	},
-	{
-		title: 'Slider',
-		type: 'link',
-		url: '/slider',
-		exact: false,
 		component: Slider,
 	},
 	{
@@ -63,11 +52,8 @@ const navItems = [
 	},
 	{
 		title: 'Browser',
-		type: 'link',
-		url: '/browser',
-		exact: false,
-		component: OpenBrowser,
-		// onPress: openBrowser,
+		type: 'button',
+		onPress: openBrowser,
 	},
 	{
 		title: 'Exit',
@@ -108,9 +94,9 @@ class Navigation extends Component {
 									{ item.type === 'link'
 										? <LinkComponent item={item} />
 										: <Button
-											title={item.title}
-											onPress={item.onPress}
-										/>
+												title={item.title}
+												onPress={item.onPress}
+											/>
 									}
 								</View>
 							)

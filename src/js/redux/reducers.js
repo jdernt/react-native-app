@@ -6,13 +6,24 @@ const initialState = {
 };
 
 export default function (state = initialState, action) {
-  if (action.type === CHANGE_STATE) {
-    return {
-      ...state,
-      isLocal: false,
-      src: action.src,
-    };
-  } else {
-    return initialState;
+  switch (action.type) {
+    case CHANGE_STATE: {
+      return {
+        ...state,
+        isLocal: false,
+        src: action.src,
+      };
+    }
+    default:
+      return initialState;
   }
+  // if (action.type === CHANGE_STATE) {
+  //   return {
+  //     ...state,
+  //     isLocal: false,
+  //     src: action.src,
+  //   };
+  // } else {
+  //   return initialState;
+  // }
 }
