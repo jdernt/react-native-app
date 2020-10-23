@@ -68,4 +68,10 @@ export const styles = StyleSheet.create({
 		height: '80%',
 		resizeMode: 'contain',
 	},
+	player: {
+		display: 'flex',
+		flexDirection: 'row',
+		justifyContent: 'space-around',
+		marginTop: 20,
+	}
 });

@@ -1,9 +1,3 @@
-// навигация: 
-//  1 кнопка перехода на страницу слайдера
-//  2 кнопка плеера
-//  3 кнопка браузера с переходом по указанной ссылке
-//  4 кнопка выхода
-
 import React, { Component } from 'react'
 import {
 	View,
@@ -13,7 +7,8 @@ import {
 import { WebView } from 'react-native-webview';
 
 import { NativeRouter, Route, Link } from "react-router-native";
-import SliderPage from './SliderPage';
+import SliderPage from '../pages/SliderPage';
+import MusicPlayerPage from '../pages/MusicPlayerPage';
 import { openPlayer, exitApp } from './onPress';
 import { styleVars } from '../styles/vars';
 import { styles } from '../styles';
@@ -31,6 +26,12 @@ const Slider = () => {
 		<SliderPage />
 	)
 };
+
+const MusicPlayer = () => {
+	return (
+		<MusicPlayerPage />
+	)
+}
 
 const OpenBrowser = () => {
 	return (
@@ -55,8 +56,10 @@ const navItems = [
 	},
 	{
 		title: 'Music',
-		type: 'button',
-		// onPress: openPlayer,
+		type: 'link',
+		url: '/music',
+		exact: false,
+		component: MusicPlayer,	
 	},
 	{
 		title: 'Browser',
