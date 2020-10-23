@@ -1,75 +1,117 @@
-import React, { Component, useState } from 'react'
+import React, { Component } from 'react'
 import {
   View,
   Text,
   Image,
   Button,
+  ActivityIndicator,
 } from 'react-native';
 import { connect } from "react-redux";
 import { changeState } from "../redux/actions";
 import { styles } from '../styles';
 
-let serverImg;
-
-const getImg = async () => {
-  const response = await fetch('https://imagesapi.osora.ru/', {
-    method: 'GET'
-  });
-
-  const result = await response.json();
-  serverImg = result;
-}
-
-getImg();
-
 const mapStateToProps = (state) => ({
-  src: state.src,
+  state: state,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  changeState(urls) {
-    dispatch(changeState(urls));
-  },
-});
+const mapDispatchToProps = (dispatch) => {
+  return {
+    changeState: (urls) => dispatch(changeState(urls)),
+    returnState: () => dispatch({type: 'INIT'}),
+  }
+};
 
-const SliderList = (props) => {
-  let [count, setCount] = useState(0);
-
-  const nextImg = () => {
-    (count++ === props.img.length-1) ? setCount(0) : setCount(count++);
+class SliderList extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      count: 0,
+    };
   }
 
-  const prevImg = () => {
-    (count-- === 0) ? setCount(props.img.length-1) : setCount(count--);
+  prevImg = () => {
+    if (this.state.count-- === 0) {
+      this.setState({count: this.props.img.length-1})
+    } else {
+      this.setState({count: this.state.count--})
+    }
+    console.log(this.state);
   }
 
-  return (
-    <View style={styles.slider__list}>
-      <Button title="prev" onPress={prevImg} />
-      <Button title="switch" onPress={props.func} />
-      <Button title="next" onPress={nextImg} />
-      <SliderItem img={props.img[0]} />
-    </View>
-  )
+  nextImg = () => {
+    if (this.state.count++ >= this.props.img.length-1) {
+      this.setState({count: 0})
+    } else {
+      this.setState({count: this.state.count++})
+    }
+    console.log(this.state)
+  }
+
+  render() {
+    const { count } = this.state;
+    return (
+      <View style={styles.slider__list}>
+        <Button title="prev" onPress={() => {this.prevImg()}} />
+        <Button title="switch" onPress={this.props.func} />
+        <Button title="next" onPress={() => {this.nextImg()}} />
+        <SliderItem img={this.props.img[count]} state={this.props.state} />
+      </View>
+    )
+  }
 }
 
-const SliderItem = ({ img }) => {
-  return (
-    <View style={styles.slider__item}>
-      <Image source={img} style={styles.slider__img} />
-    </View>
-  )
+class SliderItem extends Component {
+  constructor(props){
+    super(props)
+  }
+
+  render() {
+    return (
+      <View style={styles.slider__item}>
+        { this.props.state 
+          ? <Image source={this.props.img} style={styles.slider__img} />
+          : <Image source={{uri: this.props.img}} style={styles.slider__img} />
+        }
+      </View>
+    )
+  }
 }
 
-const SliderPage = (props) => {
-  return (
-    <View>
-      <SliderList func={() => { 
-        // props.changeState(serverImg)
-        console.log(props.src)
-      }} img={props.src} />
-    </View>
-  )
+class SliderPage extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      data: [],
+      isLoading: true
+    };
+  }
+
+  componentDidMount() {
+    fetch('https://imagesapi.osora.ru/')
+      .then((response) => response.json())
+      .then((json) => {
+        this.setState({ data: json });
+      })
+      .catch((error) => console.error(error))
+      .finally(() => {
+        this.setState({ isLoading: false });
+      });
+  }
+
+  render() {
+    const { data, isLoading } = this.state;
+
+    return (
+      <View>
+        {isLoading ? <ActivityIndicator/> : (
+          <SliderList func={() => {
+            (this.props.state.isLocal) ? this.props.changeState(data) : this.props.returnState();
+            console.log(this.props.state)
+          }} img={this.props.state.src} state={this.props.state.isLocal}/>
+        )}
+      </View>
+    )
+  }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SliderPage);

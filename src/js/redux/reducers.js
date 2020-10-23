@@ -1,20 +1,18 @@
-import { CHANGE_STATE } from './actionTypes';
-
-import slide1 from '../../img/photo-1.jpg';
-import slide2 from '../../img/photo-2.jpg';
-import slide3 from '../../img/photo-3.jpg';
+import { CHANGE_STATE, RETURN_STATE } from './actionTypes';
 
 const initialState = {
-  src: ['../../img/photo-3.jpg', '../../img/photo-2.jpg', '../../img/photo-1.jpg']
+  isLocal: true,
+  src: [require('../../img/photo-3.jpg'), require('../../img/photo-2.jpg'), require('../../img/photo-1.jpg')]
 };
 
 export default function (state = initialState, action) {
   if (action.type === CHANGE_STATE) {
     return {
       ...state,
-      src: action.src
-    }
+      isLocal: false,
+      src: action.src,
+    };
   } else {
-    return state;
+    return initialState;
   }
 }
