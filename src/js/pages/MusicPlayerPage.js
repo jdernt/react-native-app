@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import {
   View,
   Text,
@@ -9,71 +9,103 @@ import Sound from 'react-native-sound';
 import { styles } from '../styles';
 
 const jungle = new Sound('jungle.mp3');
-const spencer = new Sound('imaman.mp3');
+const spencer = new Sound('spencer.mp3');
+const bagRaiders = new Sound('bag_raiders.mp3');
+const bluesSaraceno = new Sound('blues_saraceno.mp3')
 
 const sounds = [
   {
-    title: 'jungle',
-    url: 'jungle.mp3',
+    title: 'Jungle - Happy Man',
     sound: jungle,
   },
   {
-    title: 'im a man',
-    url: 'imaman.mp3',
+    title: 'Spencer Davis Group - Im a man',
     sound: spencer,
-  }
+  },
+  {
+    title: 'Bag Raiders - Shooting stars',
+    sound: bagRaiders,
+  },
+  {
+    title: 'Blues Saraceno - The river',
+    sound: bluesSaraceno,
+  },
 ];
 
 class MusicPlayerPage extends Component {
-
-  state = {
-    isPlaying: false,
-    playbackInstance: null,
-    currentIndex: 1,
-    volume: 1.0,
-    isBuffering: false,
-    sound: sounds[0].sound,
+  constructor(props) {
+    super(props)
+    this.state = {
+      isPlaying: false,
+      count: 0,
+      title: sounds[0].title,
+      sound: sounds[0].sound,
+    }
   }
 
-  prevSound = () => {
+  prevSound = (file) => {
+    file.stop()
+    if (this.state.count-1 < 0) {
+      this.setState({
+        count: sounds.length-1,
+        title: sounds[sounds.length-1].title,
+        sound: sounds[sounds.length-1].sound
+      }, () => { this.playSound(this.state.sound) })
+    } else {
+      this.setState({
+        count: this.state.count-1,
+        title: sounds[this.state.count-1].title,
+        sound: sounds[this.state.count-1].sound
+      }, () => { this.playSound(this.state.sound) })
+    }
 
   }
 
-  nextSound = () => {
-    try {
-      this.setState({ 
-        currentIndex: this.state.currentIndex+1,
-        sound: sounds[this.state.currentIndex+1].sound
-      })
-    } catch {  
-      this.setState({ 
-        currentIndex: 0,
+  nextSound = (file) => {
+    file.stop()
+    if (this.state.count+1 > sounds.length-1) {
+      this.setState({
+        count: 0,
+        title: sounds[0].title,
         sound: sounds[0].sound
-      })
+      }, () => { this.playSound(this.state.sound) })
+    } else {
+      this.setState({
+        count: this.state.count+1,
+        title: sounds[this.state.count+1].title,
+        sound: sounds[this.state.count+1].sound
+      }, () => { this.playSound(this.state.sound) })
     }
   }
 
   playSound = (file) => {
     if (file._playing) {
-      file.stop()
+      file.pause()
       this.setState({ isPlaying: false })
     } else {
-      file.play()
+      file.play((success) => {
+        if (success) {
+          this.nextSound(file)
+        }
+      });
       this.setState({ isPlaying: true })
     }
   }
 
   render() {
-    const { sound } = this.state
+    const { title, sound } = this.state
 
     return (
       <View style={styles.player}>
-        <Button title='prev' />
+        <Text style={styles.player__text}>{title}</Text>
+        <Button title='prev' onPress={ () => {
+         this.prevSound(sound)
+        }} />
         <Button title='play/stop' onPress={ () => {
           this.playSound(sound)
         }} />
         <Button title='next' onPress={ () => {
-          this.nextSound();
+          this.nextSound(sound)
         }} />
       </View>
     )

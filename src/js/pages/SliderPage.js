@@ -29,19 +29,19 @@ class SliderList extends Component {
   }
 
   prevImg = () => {
-    if (this.state.count-- === 0) {
+    if (this.state.count-1 < 0) {
       this.setState({count: this.props.img.length-1})
     } else {
-      this.setState({count: this.state.count--})
+      this.setState({count: this.state.count-1})
     }
     console.log(this.state);
   }
 
   nextImg = () => {
-    if (this.state.count++ >= this.props.img.length-1) {
+    if (this.state.count+1 > this.props.img.length-1) {
       this.setState({count: 0})
     } else {
-      this.setState({count: this.state.count++})
+      this.setState({count: this.state.count+1})
     }
     console.log(this.state)
   }
@@ -54,13 +54,13 @@ class SliderList extends Component {
         <Button title="switch" onPress={this.props.func} />
         <Button title="next" onPress={() => {this.nextImg()}} />
         <View style={styles.slider__item}>
-          <Image 
+          <Image
             source={
-              this.props.state 
-              ? this.props.img[count] 
+              this.props.state
+              ? this.props.img[count]
               : {uri: this.props.img[count]}
-            } 
-            style={styles.slider__img} 
+            }
+            style={styles.slider__img}
           />
         </View>
       </View>
@@ -94,15 +94,15 @@ class SliderPage extends Component {
 
     return (
       <View>
-        {isLoading 
-          ? <ActivityIndicator/> 
-          : (<SliderList 
+        {isLoading
+          ? <ActivityIndicator/>
+          : (<SliderList
               func={() => {
-                (this.props.state.isLocal) 
-                ? this.props.changeState(data) 
+                (this.props.state.isLocal)
+                ? this.props.changeState(data)
                 : this.props.returnState();
                 console.log(this.props.state)
-              }} 
+              }}
               img={this.props.state.src} state={this.props.state.isLocal}
             />)
         }

@@ -97,8 +97,15 @@ export const styles = StyleSheet.create({
 	},
 	player: {
 		display: 'flex',
-		flexDirection: 'row',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
 		justifyContent: 'space-around',
 		marginTop: 20,
-	}
+  },
+  player__text: {
+    width: '100%',
+    marginBottom: 20,
+    fontSize: 20,
+    textAlign: 'center',
+  }
 });
