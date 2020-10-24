@@ -38,43 +38,7 @@ class MusicPlayerPage extends Component {
     this.state = {
       isPlaying: false,
       count: 0,
-      title: sounds[0].title,
       sound: sounds[0].sound,
-    }
-  }
-
-  prevSound = (file) => {
-    file.stop()
-    if (file._key-1 < 0) {
-      this.setState({
-        count: sounds.length-1,
-        title: sounds[sounds.length-1].title,
-        sound: sounds[sounds.length-1].sound
-      }, () => { this.playSound(this.state.sound) })
-    } else {
-      this.setState({
-        count: file._key-1,
-        title: sounds[file._key-1].title,
-        sound: sounds[file._key-1].sound
-      }, () => { this.playSound(this.state.sound) })
-    }
-
-  }
-
-  nextSound = (file) => {
-    file.stop()
-    if (file._key+1 > sounds.length-1) {
-      this.setState({
-        count: 0,
-        title: sounds[0].title,
-        sound: sounds[0].sound
-      }, () => { this.playSound(this.state.sound) })
-    } else {
-      this.setState({
-        count: file._key+1,
-        title: sounds[file._key+1].title,
-        sound: sounds[file._key+1].sound
-      }, () => { this.playSound(this.state.sound) })
     }
   }
 
@@ -100,8 +64,43 @@ class MusicPlayerPage extends Component {
       }
   }
 
+  playAnotherSound = (file) => {
+    file.setCurrentTime(0)
+    this.playSound(file)
+  }
+
+  prevSound = (file) => {
+    file.stop()
+    if (file._key-1 < 0) {
+      this.setState({
+        count: sounds.length-1,
+        sound: sounds[sounds.length-1].sound
+      }, () => { this.playAnotherSound(this.state.sound) })
+    } else {
+      this.setState({
+        count: file._key-1,
+        sound: sounds[file._key-1].sound
+      }, () => { this.playAnotherSound(this.state.sound) })
+    }
+  }
+
+  nextSound = (file) => {
+    file.stop()
+    if (file._key+1 > sounds.length-1) {
+      this.setState({
+        count: 0,
+        sound: sounds[0].sound
+      }, () => { this.playAnotherSound(this.state.sound) })
+    } else {
+      this.setState({
+        count: file._key+1,
+        sound: sounds[file._key+1].sound
+      }, () => { this.playAnotherSound(this.state.sound) })
+    }
+  }
+
   render() {
-    const { isPlaying, title, sound } = this.state
+    const { isPlaying, sound } = this.state
 
     return (
       <View style={styles.player}>
@@ -122,7 +121,7 @@ class MusicPlayerPage extends Component {
           )
         })}
         <View style={styles.player__controls}>
-          <Text style={styles.player__text}>{title}</Text>
+          <Text style={styles.player__text}>{sounds[sound._key].title}</Text>
           <Button
             title='prev'
             onPress={ () => {
