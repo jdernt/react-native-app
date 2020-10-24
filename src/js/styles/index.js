@@ -96,11 +96,25 @@ export const styles = StyleSheet.create({
 		resizeMode: 'contain',
 	},
 	player: {
-		display: 'flex',
+    flexGrow: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    padding: 20,
+  },
+  player__item: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '80%',
+    marginBottom: 10,
+  },
+  player__controls: {
+    display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
 		justifyContent: 'space-around',
-		marginTop: 20,
+		marginTop: 'auto',
   },
   player__text: {
     width: '100%',

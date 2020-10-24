@@ -45,7 +45,7 @@ class MusicPlayerPage extends Component {
 
   prevSound = (file) => {
     file.stop()
-    if (this.state.count-1 < 0) {
+    if (file._key-1 < 0) {
       this.setState({
         count: sounds.length-1,
         title: sounds[sounds.length-1].title,
@@ -53,9 +53,9 @@ class MusicPlayerPage extends Component {
       }, () => { this.playSound(this.state.sound) })
     } else {
       this.setState({
-        count: this.state.count-1,
-        title: sounds[this.state.count-1].title,
-        sound: sounds[this.state.count-1].sound
+        count: file._key-1,
+        title: sounds[file._key-1].title,
+        sound: sounds[file._key-1].sound
       }, () => { this.playSound(this.state.sound) })
     }
 
@@ -63,7 +63,7 @@ class MusicPlayerPage extends Component {
 
   nextSound = (file) => {
     file.stop()
-    if (this.state.count+1 > sounds.length-1) {
+    if (file._key+1 > sounds.length-1) {
       this.setState({
         count: 0,
         title: sounds[0].title,
@@ -71,42 +71,77 @@ class MusicPlayerPage extends Component {
       }, () => { this.playSound(this.state.sound) })
     } else {
       this.setState({
-        count: this.state.count+1,
-        title: sounds[this.state.count+1].title,
-        sound: sounds[this.state.count+1].sound
+        count: file._key+1,
+        title: sounds[file._key+1].title,
+        sound: sounds[file._key+1].sound
       }, () => { this.playSound(this.state.sound) })
     }
   }
 
   playSound = (file) => {
-    if (file._playing) {
-      file.pause()
-      this.setState({ isPlaying: false })
-    } else {
-      file.play((success) => {
-        if (success) {
-          this.nextSound(file)
-        }
-      });
-      this.setState({ isPlaying: true })
-    }
+    try {
+      this.setState({
+        title: sounds[file._key].title,
+        sound: file
+      })
+      if (file._playing) {
+        file.pause()
+        this.setState({ isPlaying: false })
+      } else {
+        file.play((success) => {
+          if (success) {
+            this.nextSound(file)
+          }
+        });
+        this.setState({ isPlaying: true })
+      }
+    } catch {
+        console.log(file)
+      }
   }
 
   render() {
-    const { title, sound } = this.state
+    const { isPlaying, title, sound } = this.state
 
     return (
       <View style={styles.player}>
-        <Text style={styles.player__text}>{title}</Text>
-        <Button title='prev' onPress={ () => {
-         this.prevSound(sound)
-        }} />
-        <Button title='play/stop' onPress={ () => {
-          this.playSound(sound)
-        }} />
-        <Button title='next' onPress={ () => {
-          this.nextSound(sound)
-        }} />
+        {sounds.map((sound, i) => {
+          return (
+            <View style={styles.player__item} key={i}>
+              <Text>
+                {sound.title}
+              </Text>
+              <Button
+                title='play'
+                onPress={ () => {
+                  this.state.sound.stop()
+                  this.playSound(sound.sound)
+                }}
+              />
+            </View>
+          )
+        })}
+        <View style={styles.player__controls}>
+          <Text style={styles.player__text}>{title}</Text>
+          <Button
+            title='prev'
+            onPress={ () => {
+              this.prevSound(sound)
+            }}
+          />
+          <Button
+            title={ isPlaying ? 'pause' : 'play' }
+            onPress={ () => {
+              this.playSound(sound)
+            }}
+          />
+          <Button
+            title='next'
+            onPress={ () => {
+              this.nextSound(sound)
+            }}
+          />
+        </View>
       </View>
     )
   }

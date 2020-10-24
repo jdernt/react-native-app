@@ -19,10 +19,6 @@ class App extends Component {
     }
   }
 
-  showModal = () => {
-    this.setState({ isActive: true })
-  }
-
   hideModal = () => {
     this.setState({ isActive: false })
   }
