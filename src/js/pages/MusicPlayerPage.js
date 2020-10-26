@@ -72,7 +72,7 @@ class MusicPlayerPage extends Component {
   }
 
   prevSound = (file) => {
-    file.stop()
+    file._playing && file.stop() 
     if (file._key-1 < 0) {
       this.setState({
         count: sounds.length-1,
@@ -88,7 +88,7 @@ class MusicPlayerPage extends Component {
   }
 
   nextSound = (file) => {
-    file.stop()
+    file._playing && file.stop() 
     if (file._key+1 > sounds.length-1) {
       this.setState({
         count: 0,
@@ -117,7 +117,7 @@ class MusicPlayerPage extends Component {
               <Button
                 title='play'
                 onPress={ () => {
-                  this.state.sound.stop()
+                  this.state.sound._playing && this.state.sound.stop()
                   this.playSound(sound.sound)
                 }}
               />
