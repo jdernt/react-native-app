@@ -51,6 +51,7 @@ class MusicPlayerPage extends Component {
       if (file._playing) {
         file.pause()
         this.setState({ isPlaying: false })
+        console.log('sound on pause')
       } else {
         file.play((success) => {
           if (success) {
@@ -58,9 +59,10 @@ class MusicPlayerPage extends Component {
           }
         });
         this.setState({ isPlaying: true })
+        console.log('sound playing')
       }
     } catch {
-        console.log(file)
+        console.log('download failed ' + file)
       }
   }
 
@@ -82,6 +84,7 @@ class MusicPlayerPage extends Component {
         sound: sounds[file._key-1].sound
       }, () => { this.playAnotherSound(this.state.sound) })
     }
+    console.log('switch to previous sound')
   }
 
   nextSound = (file) => {
@@ -97,6 +100,7 @@ class MusicPlayerPage extends Component {
         sound: sounds[file._key+1].sound
       }, () => { this.playAnotherSound(this.state.sound) })
     }
+    console.log('switch to next sound')
   }
 
   render() {

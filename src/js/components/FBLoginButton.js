@@ -11,13 +11,8 @@ import {
   LoginManager,
 } from 'react-native-fbsdk';
 
-export default class App extends Component {
+export default class FBLoginButton extends Component {
   state = {userInfo: {}};
-
-  logoutWithFacebook = () => {
-    LoginManager.logOut();
-    this.setState({userInfo: {}});
-  };
 
   getInfoFromToken = token => {
     const PROFILE_REQUEST_PARAMS = {
@@ -33,7 +28,7 @@ export default class App extends Component {
           console.log('login info has error: ' + error);
         } else {
           this.setState({userInfo: user});
-          console.log('result:', user);
+          // console.log('result:', user);
         }
       },
     );
@@ -45,13 +40,15 @@ export default class App extends Component {
     LoginManager.logInWithPermissions(['public_profile']).then(
       login => {
         if (login.isCancelled) {
-          console.log('Login cancelled');
+          console.log('Login with FB cancelled');
         } else {
-          AccessToken.getCurrentAccessToken().then(data => {
-            const accessToken = data.accessToken.toString();
-            this.getInfoFromToken(accessToken);
-            this.props.hideModal()
-          });
+          AccessToken.getCurrentAccessToken().then(() => {
+            // const accessToken = data.accessToken.toString();
+            // this.getInfoFromToken(accessToken);
+            this.props.hideModal() 
+            console.log('login with FB success')
+          })
+          
         }
       },
       error => {
@@ -63,14 +60,9 @@ export default class App extends Component {
   state = {userInfo: {}};
 
   render() {
-    const isLogin = this.state.userInfo.name;
-    const buttonText = isLogin ? 'Logout With Facebook' : 'Login With Facebook';
-    const onPressButton = isLogin
-      ? this.logoutWithFacebook
-      : this.loginWithFacebook;
     return (
       <View>
-        <Button onPress={onPressButton} title={buttonText} />
+        <Button onPress={this.loginWithFacebook} title='Login With Facebook' />
       </View>
     );
   }

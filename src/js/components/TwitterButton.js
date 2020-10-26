@@ -26,14 +26,15 @@ export default class TwitterButton extends Component {
     RNTwitterSignIn.init(Constants.TWITTER_COMSUMER_KEY, Constants.TWITTER_CONSUMER_SECRET)
     RNTwitterSignIn.logIn()
       .then(loginData => {
-        console.log(loginData)
+        // console.log(loginData)
         const { authToken, authTokenSecret } = loginData
         if (authToken && authTokenSecret) {
           this.props.hideModal();
+          console.log('login with Twitter success')
         }
       })
       .catch(error => {
-        console.log(error)
+        console.log('Login fail with error: ' + error)
       }
     )
   }

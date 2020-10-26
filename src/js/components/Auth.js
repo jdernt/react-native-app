@@ -2,8 +2,6 @@ import React, { Component } from 'react'
 import {
   View,
   Text,
-  Button,
-  TouchableHighlight,
 } from 'react-native';
 import FBLoginButton from './FBLoginButton'
 import TwitterButton from './TwitterButton';
