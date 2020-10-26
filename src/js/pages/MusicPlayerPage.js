@@ -8,29 +8,29 @@ import Sound from 'react-native-sound';
 
 import { styles } from '../styles';
 
-const jungle = new Sound('jungle.mp3');
-const spencer = new Sound('spencer.mp3');
-const bagRaiders = new Sound('bag_raiders.mp3');
-const bluesSaraceno = new Sound('blues_saraceno.mp3')
-
 const sounds = [
   {
-    title: 'Jungle - Happy Man',
-    sound: jungle,
-  },
-  {
-    title: 'Spencer Davis Group - Im a man',
-    sound: spencer,
-  },
-  {
     title: 'Bag Raiders - Shooting stars',
-    sound: bagRaiders,
+    url: 'bag_raiders.mp3',
   },
   {
     title: 'Blues Saraceno - The river',
-    sound: bluesSaraceno,
+    url: 'blues_saraceno.mp3',
+  },
+  {
+    title: 'Jungle - Happy Man',
+    url: 'jungle.mp3',
+  },
+  {
+    title: 'Spencer Davis Group - Im a man',
+    url: 'spencer.mp3',
   },
 ];
+
+sounds.forEach( sound => {
+  let soundItem = new Sound(sound.url)
+  sound.sound = soundItem
+})
 
 class MusicPlayerPage extends Component {
   constructor(props) {

@@ -3,7 +3,6 @@ import {
 	View,
 	Text,
 	Button,
-	TouchableOpacity
 } from 'react-native';
 
 import { NativeRouter, Route, Link } from "react-router-native";
