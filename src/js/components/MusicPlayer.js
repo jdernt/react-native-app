@@ -17,11 +17,11 @@ function ProgressBar() {
 
   return (
     <View style={styles.player__progress}>
-      <View style={{ flex: progress.position, backgroundColor: "red" }} />
+      <View style={{ flex: progress.position, backgroundColor: "#333" }} />
       <View
         style={{
           flex: progress.duration - progress.position,
-          backgroundColor: "grey"
+          backgroundColor: "#c9c9c9"
         }}
       />
     </View>

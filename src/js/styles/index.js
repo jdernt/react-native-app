@@ -102,8 +102,16 @@ export const styles = StyleSheet.create({
 	},
 	player: {
     flex: 1,
+    padding: 20,
     alignItems: "center",
-	},
+  },
+  player__list: {
+    width: '70%',
+  },
+  player__text: {
+    marginBottom: 10,
+    fontSize: 16,
+  },
 	player__container: {
 		marginTop: 40,
 	},
@@ -115,19 +123,21 @@ export const styles = StyleSheet.create({
     width: 140,
     height: 140,
     marginTop: 20,
-    backgroundColor: "grey"
+    backgroundColor: "#c9c9c9"
 	},
 	player__progress: {
-    height: 1,
+    height: 2,
     width: "90%",
-    marginTop: 10,
+    marginTop: 20,
     flexDirection: "row"
 	},
 	player__title: {
-    marginTop: 10
+    marginTop: 20,
+    fontSize: 16,
   },
   player__artist: {
-    fontWeight: "bold"
+    fontWeight: "bold",
+    fontSize: 20,
   },
   player__controls: {
     marginVertical: 20,

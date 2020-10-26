@@ -1,14 +1,52 @@
 import React, { useEffect } from "react";
-import { Text, View } from "react-native";
+import {
+  Text,
+  View,
+  Button
+} from "react-native";
 import TrackPlayer, { usePlaybackState } from "react-native-track-player";
 
-import Player from "../components/Player";
+import Player from "../components/MusicPlayer";
 import playlistData from "../../data/playlist.json";
-import localTrack from "../../resources/pure.m4a";
 
 import { styles } from '../styles';
 
-export default function PlaylistScreen() {
+const localSongs = [
+  {
+    id: "jungle",
+    url: require('../../audio/jungle.mp3'),
+    title: "Happy Man",
+    artist: "Jungle",
+    artwork: "https://pic.lyricshub.ru/img/6/s/2/h/yfw6ydh2s6.jpg",
+    duration: 190,
+  },
+  {
+    id: "spencer",
+    url: require('../../audio/spencer.mp3'),
+    title: "Im a man",
+    artist: "Spencer Davis group",
+    artwork: "https://img.discogs.com/Qoa36Rx-OwpM3PzO0sVp8xvFqsk=/fit-in/300x300/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-2047664-1260718467.jpeg.jpg",
+    duration: 165,
+  },
+  {
+    id: "bag_raiders",
+    url: require('../../audio/bag_raiders.mp3'),
+    title: "Shooting stars",
+    artist: "Bag raiders",
+    artwork: "https://images-na.ssl-images-amazon.com/images/I/51gv0XyD6tL._SX342_QL70_ML2_.jpg",
+    duration: 235,
+  },
+  {
+    id: "blues_saraceno",
+    url: require('../../audio/blues_saraceno.mp3'),
+    title: "The rive",
+    artist: "Blues Saraceno",
+    artwork: "https://i.ytimg.com/vi/fmLR8S8DYqo/maxresdefault.jpg",
+    duration: 215,
+  }
+]
+
+export default function MusicPlayerPage() {
   const playbackState = usePlaybackState();
 
   useEffect(() => {
@@ -17,6 +55,7 @@ export default function PlaylistScreen() {
 
   async function setup() {
     await TrackPlayer.setupPlayer({});
+    await downloadPlaylist();
     await TrackPlayer.updateOptions({
       stopWithApp: true,
       capabilities: [
@@ -43,19 +82,18 @@ export default function PlaylistScreen() {
     });
   }
 
+  async function downloadPlaylist() {
+    await TrackPlayer.reset();
+    await TrackPlayer.add(playlistData);
+    await localSongs.forEach( song => {
+      TrackPlayer.add(song)
+    })
+  }
+
   async function togglePlayback() {
     const currentTrack = await TrackPlayer.getCurrentTrack();
-    if (currentTrack == null) {
-      await TrackPlayer.reset();
-      await TrackPlayer.add(playlistData);
-      await TrackPlayer.add({
-        id: "local-track",
-        url: localTrack,
-        title: "Pure (Demo)",
-        artist: "David Chavez",
-        artwork: "https://images.unsplash.com/photo-1603690969587-31fedd1009c4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=751&q=80",
-        duration: 28
-      });
+    if (currentTrack === null) {
+      await downloadPlaylist();
       await TrackPlayer.play();
     } else {
       if (playbackState === TrackPlayer.STATE_PAUSED) {
@@ -68,6 +106,18 @@ export default function PlaylistScreen() {
 
   return (
     <View style={styles.player}>
+      <View style={styles.player__list}>
+        {localSongs.map((song, i) => {
+          return (
+            <View key={i} style={styles.player__item} >
+              <Text style={styles.player__text}>{song.artist} - {song.title}</Text>
+              <Button title='play' onPress={() => {
+
+                }} />
+            </View>
+          )
+        })}
+      </View>
       <Player
         onNext={skipToNext}
         style={styles.player__container}
@@ -78,10 +128,6 @@ export default function PlaylistScreen() {
     </View>
   );
 }
-
-PlaylistScreen.navigationOptions = {
-  title: "Playlist Example"
-};
 
 function getStateName(state) {
   switch (state) {
