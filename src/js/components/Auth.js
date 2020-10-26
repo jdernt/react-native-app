@@ -5,46 +5,22 @@ import {
   Button,
   TouchableHighlight,
 } from 'react-native';
+import FBLoginButton from './FBLoginButton'
+import TwitterButton from './TwitterButton';
 import { styles } from '../styles';
 
-const socials = [
-  {
-    title: 'facebook',
-  },
-  {
-    title: 'twitter',
-  },
-  {
-    title: 'vk'
-  },
-  {
-    title: 'google'
-  }
-]
 
 class Auth extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      isActive: true
-    }
-  }
-
   render() {
     return (
       <View style={styles.auth}>
         <Text style={styles.auth__title}>Авторизуйтесь</Text>
-        {socials.map((social, i) => {
-          return <Button title={social.title} key={i} />
-        })}
-        <TouchableHighlight 
-          style={styles.auth__close}
-          onPress={() => {
-            this.props.onPress();
-          }}
-        >
-          <Text>Hide</Text>
-        </TouchableHighlight>
+        <FBLoginButton
+          hideModal={this.props.hideModal} 
+        />
+        <TwitterButton 
+          hideModal={this.props.hideModal}
+        />
       </View>
     )
   }

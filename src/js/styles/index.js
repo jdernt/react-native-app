@@ -29,10 +29,15 @@ export const styles = StyleSheet.create({
 	},
 	auth__close: {
 		alignSelf: 'center',
-		width: 40,
-		height: 30,
-		fontSize: 20,
 		padding: 7,
+		fontSize: 20,
+		borderRadius: 2,
+		backgroundColor: '#33333330',
+	},
+	auth__logout: {
+		alignSelf: 'center',
+		padding: 7,
+		fontSize: 20,
 		borderRadius: 2,
 		backgroundColor: '#33333330',
 	},
@@ -121,5 +126,5 @@ export const styles = StyleSheet.create({
     marginBottom: 20,
     fontSize: 20,
     textAlign: 'center',
-  }
+	},
 });

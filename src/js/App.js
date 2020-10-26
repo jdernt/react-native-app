@@ -15,12 +15,16 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      isActive: true
+      isActive: true,
+      isLoggedIn: false,
     }
   }
 
   hideModal = () => {
-    this.setState({ isActive: false })
+    this.setState({
+      isLoggedIn: true,
+      isActive: false
+    })
   }
 
   render() {
@@ -33,11 +37,10 @@ class App extends Component {
             animationType="slide"
             transparent={true}
             visible={isActive}
-            onRequestClose={() => {
-              Alert.alert("Modal has been closed.");
-            }}
           >
-            <Auth onPress={this.hideModal} />
+            <Auth 
+              hideModal={this.hideModal} 
+            />
           </Modal>
           <Header />
           <Navigation />
