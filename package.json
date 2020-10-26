@@ -10,9 +10,6 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "-": "^0.0.1",
-    "adb": "^0.2.0",
-    "date-fns": "^2.16.1",
     "react": "16.13.1",
     "react-native": "0.63.3",
     "react-native-cli": "^2.0.1",
@@ -20,9 +17,7 @@
     "react-native-fbsdk": "^2.0.0",
     "react-native-login-twitter": "^3.0.4",
     "react-native-sound": "^0.11.0",
-    "react-native-video": "^5.1.0-alpha8",
-    "react-native-vkontakte-login": "^1.0.1",
-    "react-native-webview": "^10.9.2",
+    "react-native-track-player": "^1.2.3",
     "react-redux": "^7.2.1",
     "react-router-native": "^5.2.0",
     "redux": "^4.0.5",

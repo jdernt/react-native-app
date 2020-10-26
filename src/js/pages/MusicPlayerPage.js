@@ -1,153 +1,111 @@
-import React, { Component } from 'react';
-import {
-  View,
-  Text,
-  Button,
-} from 'react-native';
-import Sound from 'react-native-sound';
+import React, { useEffect } from "react";
+import { Text, View } from "react-native";
+import TrackPlayer, { usePlaybackState } from "react-native-track-player";
+
+import Player from "../components/Player";
+import playlistData from "../../data/playlist.json";
+import localTrack from "../../resources/pure.m4a";
 
 import { styles } from '../styles';
 
-const sounds = [
-  {
-    title: 'Bag Raiders - Shooting stars',
-    url: 'bag_raiders.mp3',
-  },
-  {
-    title: 'Blues Saraceno - The river',
-    url: 'blues_saraceno.mp3',
-  },
-  {
-    title: 'Jungle - Happy Man',
-    url: 'jungle.mp3',
-  },
-  {
-    title: 'Spencer Davis Group - Im a man',
-    url: 'spencer.mp3',
-  },
-];
+export default function PlaylistScreen() {
+  const playbackState = usePlaybackState();
 
-sounds.forEach( sound => {
-  let soundItem = new Sound(sound.url)
-  sound.sound = soundItem
-})
+  useEffect(() => {
+    setup();
+  }, []);
 
-class MusicPlayerPage extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      isPlaying: false,
-      count: 0,
-      sound: sounds[0].sound,
-    }
+  async function setup() {
+    await TrackPlayer.setupPlayer({});
+    await TrackPlayer.updateOptions({
+      stopWithApp: true,
+      capabilities: [
+        TrackPlayer.CAPABILITY_PLAY,
+        TrackPlayer.CAPABILITY_PAUSE,
+        TrackPlayer.CAPABILITY_STOP,
+        TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
+        TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS
+    ],
+
+    // An array of capabilities that will show up when the notification is in the compact form on Android
+    compactCapabilities: [
+        TrackPlayer.CAPABILITY_PLAY,
+        TrackPlayer.CAPABILITY_PAUSE,
+        TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
+        TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS
+    ],
+    notificationCapabilities : [
+        TrackPlayer.CAPABILITY_PLAY,
+        TrackPlayer.CAPABILITY_PAUSE,
+        TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
+        TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS
+    ],
+    });
   }
 
-  playSound = (file) => {
-    try {
-      this.setState({
-        title: sounds[file._key].title,
-        sound: file
-      })
-      if (file._playing) {
-        file.pause()
-        this.setState({ isPlaying: false })
-        console.log('sound on pause')
+  async function togglePlayback() {
+    const currentTrack = await TrackPlayer.getCurrentTrack();
+    if (currentTrack == null) {
+      await TrackPlayer.reset();
+      await TrackPlayer.add(playlistData);
+      await TrackPlayer.add({
+        id: "local-track",
+        url: localTrack,
+        title: "Pure (Demo)",
+        artist: "David Chavez",
+        artwork: "https://images.unsplash.com/photo-1603690969587-31fedd1009c4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=751&q=80",
+        duration: 28
+      });
+      await TrackPlayer.play();
+    } else {
+      if (playbackState === TrackPlayer.STATE_PAUSED) {
+        await TrackPlayer.play();
       } else {
-        file.play((success) => {
-          if (success) {
-            this.nextSound(file)
-          }
-        });
-        this.setState({ isPlaying: true })
-        console.log('sound playing')
+        await TrackPlayer.pause();
       }
-    } catch {
-        console.log('download failed ' + file)
-      }
-  }
-
-  playAnotherSound = (file) => {
-    file.setCurrentTime(0)
-    this.playSound(file)
-  }
-
-  prevSound = (file) => {
-    file._playing && file.stop() 
-    if (file._key-1 < 0) {
-      this.setState({
-        count: sounds.length-1,
-        sound: sounds[sounds.length-1].sound
-      }, () => { this.playAnotherSound(this.state.sound) })
-    } else {
-      this.setState({
-        count: file._key-1,
-        sound: sounds[file._key-1].sound
-      }, () => { this.playAnotherSound(this.state.sound) })
     }
-    console.log('switch to previous sound')
   }
 
-  nextSound = (file) => {
-    file._playing && file.stop() 
-    if (file._key+1 > sounds.length-1) {
-      this.setState({
-        count: 0,
-        sound: sounds[0].sound
-      }, () => { this.playAnotherSound(this.state.sound) })
-    } else {
-      this.setState({
-        count: file._key+1,
-        sound: sounds[file._key+1].sound
-      }, () => { this.playAnotherSound(this.state.sound) })
-    }
-    console.log('switch to next sound')
-  }
+  return (
+    <View style={styles.player}>
+      <Player
+        onNext={skipToNext}
+        style={styles.player__container}
+        onPrevious={skipToPrevious}
+        onTogglePlayback={togglePlayback}
+      />
+      <Text style={styles.player__state}>{getStateName(playbackState)}</Text>
+    </View>
+  );
+}
 
-  render() {
-    const { isPlaying, sound } = this.state
+PlaylistScreen.navigationOptions = {
+  title: "Playlist Example"
+};
 
-    return (
-      <View style={styles.player}>
-        {sounds.map((sound, i) => {
-          return (
-            <View style={styles.player__item} key={i}>
-              <Text>
-                {sound.title}
-              </Text>
-              <Button
-                title='play'
-                onPress={ () => {
-                  this.state.sound._playing && this.state.sound.stop()
-                  this.playSound(sound.sound)
-                }}
-              />
-            </View>
-          )
-        })}
-        <View style={styles.player__controls}>
-          <Text style={styles.player__text}>{sounds[sound._key].title}</Text>
-          <Button
-            title='prev'
-            onPress={ () => {
-              this.prevSound(sound)
-            }}
-          />
-          <Button
-            title={ isPlaying ? 'pause' : 'play' }
-            onPress={ () => {
-              this.playSound(sound)
-            }}
-          />
-          <Button
-            title='next'
-            onPress={ () => {
-              this.nextSound(sound)
-            }}
-          />
-        </View>
-      </View>
-    )
+function getStateName(state) {
+  switch (state) {
+    case TrackPlayer.STATE_NONE:
+      return "None";
+    case TrackPlayer.STATE_PLAYING:
+      return "Playing";
+    case TrackPlayer.STATE_PAUSED:
+      return "Paused";
+    case TrackPlayer.STATE_STOPPED:
+      return "Stopped";
+    case TrackPlayer.STATE_BUFFERING:
+      return "Buffering";
   }
 }
 
-export default MusicPlayerPage;
+async function skipToNext() {
+  try {
+    await TrackPlayer.skipToNext();
+  } catch (_) {}
+}
+
+async function skipToPrevious() {
+  try {
+    await TrackPlayer.skipToPrevious();
+  } catch (_) {}
+}

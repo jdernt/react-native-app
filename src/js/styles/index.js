@@ -101,30 +101,46 @@ export const styles = StyleSheet.create({
 		resizeMode: 'contain',
 	},
 	player: {
-    flexGrow: 1,
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    padding: 20,
+    flex: 1,
+    alignItems: "center",
+	},
+	player__container: {
+		marginTop: 40,
+	},
+	player__card: {
+		width: "80%",
+    alignItems: "center",
+	},
+	player__cover: {
+    width: 140,
+    height: 140,
+    marginTop: 20,
+    backgroundColor: "grey"
+	},
+	player__progress: {
+    height: 1,
+    width: "90%",
+    marginTop: 10,
+    flexDirection: "row"
+	},
+	player__title: {
+    marginTop: 10
   },
-  player__item: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '80%',
-    marginBottom: 10,
+  player__artist: {
+    fontWeight: "bold"
   },
   player__controls: {
-    display: 'flex',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-		justifyContent: 'space-around',
-		marginTop: 'auto',
+    marginVertical: 20,
+    flexDirection: "row"
   },
-  player__text: {
-    width: '100%',
-    marginBottom: 20,
-    fontSize: 20,
-    textAlign: 'center',
-	},
+  player__controlButtonContainer: {
+    flex: 1
+  },
+  player__controlButtonText: {
+    fontSize: 18,
+    textAlign: "center"
+  },
+	player__state: {
+		marginTop: 20,
+	}
 });

@@ -27,13 +27,12 @@ class SliderPage extends Component {
       data: [],
       isLoading: true,
       count: 0,
-      img: this.props.state.src
     };
   }
 
   prevImg = () => {
     if (this.state.count-1 < 0) {
-      this.setState({count: this.state.img.length-1})
+      this.setState({count: this.props.state.src.length-1})
     } else {
       this.setState({count: this.state.count-1})
     }
@@ -41,7 +40,7 @@ class SliderPage extends Component {
   }
 
   nextImg = () => {
-    if (this.state.count+1 > this.state.img.length-1) {
+    if (this.state.count+1 > this.props.state.src.length-1) {
       this.setState({count: 0})
     } else {
       this.setState({count: this.state.count+1})
@@ -78,7 +77,7 @@ class SliderPage extends Component {
               <Button title="next" onPress={() => {this.nextImg()}} />
               <View style={styles.slider__item}>
                 <Image
-                  source={ this.props.state.isLocal ? img[count] : {uri: data[count]} }
+                  source={ this.props.state.isLocal ? this.props.state.src[count] : {uri: this.props.state.src[count]} }
                   style={styles.slider__img}
                 />
               </View>

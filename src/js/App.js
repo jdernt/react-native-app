@@ -33,7 +33,7 @@ class App extends Component {
     return (
       <Provider store={store}>
         <View style={styles.container}>
-          <Modal
+          {/* <Modal
             animationType="slide"
             transparent={true}
             visible={isActive}
@@ -41,7 +41,7 @@ class App extends Component {
             <Auth 
               hideModal={this.hideModal} 
             />
-          </Modal>
+          </Modal> */}
           <Header />
           <Navigation />
         </View>
