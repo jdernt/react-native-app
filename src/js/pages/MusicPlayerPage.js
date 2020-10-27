@@ -12,7 +12,7 @@ import { styles } from '../styles';
 
 const localSongs = [
   {
-    id: "jungle",
+    id: "1",
     url: require('../../audio/jungle.mp3'),
     title: "Happy Man",
     artist: "Jungle",
@@ -20,7 +20,7 @@ const localSongs = [
     duration: 190,
   },
   {
-    id: "spencer",
+    id: "2",
     url: require('../../audio/spencer.mp3'),
     title: "Im a man",
     artist: "Spencer Davis group",
@@ -28,7 +28,7 @@ const localSongs = [
     duration: 165,
   },
   {
-    id: "bag_raiders",
+    id: "3",
     url: require('../../audio/bag_raiders.mp3'),
     title: "Shooting stars",
     artist: "Bag raiders",
@@ -36,9 +36,9 @@ const localSongs = [
     duration: 235,
   },
   {
-    id: "blues_saraceno",
+    id: "4",
     url: require('../../audio/blues_saraceno.mp3'),
-    title: "The rive",
+    title: "The river",
     artist: "Blues Saraceno",
     artwork: "https://i.ytimg.com/vi/fmLR8S8DYqo/maxresdefault.jpg",
     duration: 215,
@@ -54,7 +54,7 @@ export default function MusicPlayerPage() {
 
   async function setup() {
     await TrackPlayer.setupPlayer({});
-    await downloadPlaylist();
+    await TrackPlayer.add(localSongs);
     await TrackPlayer.updateOptions({
       stopWithApp: true,
       capabilities: [
@@ -75,21 +75,18 @@ export default function MusicPlayerPage() {
     notificationCapabilities : [
         TrackPlayer.CAPABILITY_PLAY,
         TrackPlayer.CAPABILITY_PAUSE,
+        TrackPlayer.CAPABILITY_STOP,
         TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
         TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS
     ],
     });
   }
 
-  async function downloadPlaylist() {
-    await TrackPlayer.reset();
-    await TrackPlayer.add(localSongs);
-  }
-
   async function togglePlayback() {
-    const currentTrack = await TrackPlayer.getCurrentTrack();
+    const currentTrack = await TrackPlayer.getCurrentTrack(); 
     if (currentTrack === null) {
-      await downloadPlaylist();
+      await TrackPlayer.reset();
+      await TrackPlayer.add(localSongs);
       await TrackPlayer.play();
     } else {
       if (playbackState === TrackPlayer.STATE_PAUSED) {
@@ -102,18 +99,6 @@ export default function MusicPlayerPage() {
 
   return (
     <View style={styles.player}>
-      <View style={styles.player__list}>
-        {localSongs.map((song, i) => {
-          return (
-            <View key={i} style={styles.player__item} >
-              <Text style={styles.player__text}>{song.artist} - {song.title}</Text>
-              <Button title='play' onPress={() => {
-
-                }} />
-            </View>
-          )
-        })}
-      </View>
       <Player
         onNext={skipToNext}
         style={styles.player__container}

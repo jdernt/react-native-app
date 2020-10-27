@@ -8,7 +8,7 @@ import {
 import { NativeRouter, Route, Link } from "react-router-native";
 import SliderPage from '../pages/SliderPage';
 import MusicPlayerPage from '../pages/MusicPlayerPage';
-import { openBrowser, exitApp } from './onPress';
+import { openBrowser, exitApp } from './onPressEvents';
 import { styleVars } from '../styles/vars';
 import { styles } from '../styles';
 
