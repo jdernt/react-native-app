@@ -7,7 +7,6 @@ import {
 import TrackPlayer, { usePlaybackState } from "react-native-track-player";
 
 import Player from "../components/MusicPlayer";
-import playlistData from "../../data/playlist.json";
 
 import { styles } from '../styles';
 
@@ -84,10 +83,7 @@ export default function MusicPlayerPage() {
 
   async function downloadPlaylist() {
     await TrackPlayer.reset();
-    await TrackPlayer.add(playlistData);
-    await localSongs.forEach( song => {
-      TrackPlayer.add(song)
-    })
+    await TrackPlayer.add(localSongs);
   }
 
   async function togglePlayback() {
