@@ -29,7 +29,8 @@ module.exports = async function() {
   });
 
   TrackPlayer.addEventListener('remote-stop', () => {
-    TrackPlayer.stop()
+    TrackPlayer.pause()
+    TrackPlayer.seekTo(0)
   });
 
 };

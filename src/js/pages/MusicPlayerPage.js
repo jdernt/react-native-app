@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
 import {
   Text,
-  View,
-  Button
+  View
 } from "react-native";
 import TrackPlayer, { usePlaybackState } from "react-native-track-player";
 
@@ -61,24 +60,26 @@ export default function MusicPlayerPage() {
         TrackPlayer.CAPABILITY_PLAY,
         TrackPlayer.CAPABILITY_PAUSE,
         TrackPlayer.CAPABILITY_STOP,
+        TrackPlayer.CAPABILITY_SEEK_TO,
         TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
         TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS
-    ],
+      ],
 
     // An array of capabilities that will show up when the notification is in the compact form on Android
-    compactCapabilities: [
-        TrackPlayer.CAPABILITY_PLAY,
-        TrackPlayer.CAPABILITY_PAUSE,
-        TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
-        TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS
-    ],
-    notificationCapabilities : [
-        TrackPlayer.CAPABILITY_PLAY,
-        TrackPlayer.CAPABILITY_PAUSE,
-        TrackPlayer.CAPABILITY_STOP,
-        TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
-        TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS
-    ],
+      compactCapabilities: [
+          TrackPlayer.CAPABILITY_PLAY,
+          TrackPlayer.CAPABILITY_PAUSE,
+          TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
+          TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS
+      ],
+      notificationCapabilities : [
+          TrackPlayer.CAPABILITY_PLAY,
+          TrackPlayer.CAPABILITY_PAUSE,
+          TrackPlayer.CAPABILITY_STOP,
+          TrackPlayer.CAPABILITY_SEEK_TO,
+          TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
+          TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS
+      ],
     });
   }
 
@@ -92,7 +93,7 @@ export default function MusicPlayerPage() {
       if (playbackState === TrackPlayer.STATE_PAUSED) {
         await TrackPlayer.play();
       } else {
-        await TrackPlayer.pause();
+        await TrackPlayer.pause()
       }
     }
   }
